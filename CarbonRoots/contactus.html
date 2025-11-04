@@ -7,13 +7,74 @@
 </head>
 <body>
     <nav>
+        <div class="logo">Carbon Roots</div>
         <a href="index.html">Home</a>
         <a href="education.html">Education</a>
-        <div class="logo">Carbon Roots</div>
         <a href="aboutus.html">About Us</a>
         <a href="contactus.html">Work With Us</a>
+        <a href="profile.html">Profile</a>
+        <a href="login.html" class="login-link">Login</a>
     </nav>
-    <h1>Work With Us!</h1>
-    <p>Carbon Roots is a platform for carbon capture and storage.</p>
+    <div class="header-content">
+        <h1>Work With Us!</h1>
+        <p>Have questions, ideas, or want to collaborate? We'd love to hear from you.</p>
+    </div>
+
+    <div class="contact-container">
+        <div class="contact-form-wrapper">
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select a subject</option>
+                        <option value="partnership">Partnership Inquiry</option>
+                        <option value="collaboration">Research Collaboration</option>
+                        <option value="media">Media Inquiry</option>
+                        <option value="support">Technical Support</option>
+                        <option value="general">General Question</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" rows="6" required placeholder="Tell us about your inquiry..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <p>We're here to help and answer any questions you might have. We look forward to hearing from you.</p>
+            
+            <div class="contact-details">
+                <div class="contact-item">
+                    <strong>Email:</strong>
+                    <p>enactusacadia2025@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <strong>Response Time:</strong>
+                    <p>We typically respond within 24-48 hours</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Carbon Roots. All rights reserved.</p>
+        <p>Contact: enactusacadia2025@gmail.com</p>
+    </footer>
 </body>
 </html>
