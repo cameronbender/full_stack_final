@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Submission</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto h-screen pt-20 px-10">
+        <form action="/api/proposals" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label class="block mb-1 font-medium" for="title">Proposal Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    class="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter proposal title"
+                    required
+                />
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium" for="author_name">Author Name</label>
+                <input
+                    type="text"
+                    name="author_name"
+                    id="author_name"
+                    class="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter full name"
+                    required
+                />
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium" for="institution">Institution</label>
+                <input
+                    type="text"
+                    name="institution"
+                    id="institution"
+                    class="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter institution"
+                />
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium" for="supervisor">Supervisor</label>
+                <input
+                    type="text"
+                    name="supervisor"
+                    id="supervisor"
+                    class="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter supervisor name"
+                />
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium" for="file">Upload PDF</label>
+                <input
+                    type="file"
+                    name="pdf"
+                    id="file"
+                    accept="application/pdf"
+                    class="border border-gray-300 rounded-md p-2 w-full"
+                    required
+                />
+            </div>
+
+            <button class="text-white bg-blue-500 px-4 py-2 rounded-md my-4">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById("file");
+        const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+
+        fileInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (file && file.size > MAX_SIZE) {
+                alert("File is too large. Maximum size is 5 MB.");
+                this.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
