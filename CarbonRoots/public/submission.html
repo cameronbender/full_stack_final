@@ -1,71 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>File Submission</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
     <div class="max-w-4xl mx-auto h-screen pt-20 px-10">
-        <form action="/api/proposals" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form id="submissionForm" action="/api/proposals" method="POST" enctype="multipart/form-data" class="space-y-6">
             <div>
                 <label class="block mb-1 font-medium" for="title">Proposal Title</label>
-                <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    class="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter proposal title"
-                    required
-                />
+                <input type="text" name="title" id="title" class="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter proposal title" required />
             </div>
 
             <div>
                 <label class="block mb-1 font-medium" for="author_name">Author Name</label>
-                <input
-                    type="text"
-                    name="author_name"
-                    id="author_name"
-                    class="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter full name"
-                    required
-                />
+                <input type="text" name="author_name" id="author_name"
+                    class="border border-gray-300 rounded-md p-2 w-full" placeholder="Enter full name" required />
             </div>
 
             <div>
                 <label class="block mb-1 font-medium" for="institution">Institution</label>
-                <input
-                    type="text"
-                    name="institution"
-                    id="institution"
-                    class="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter institution"
-                />
+                <input type="text" name="institution" id="institution"
+                    class="border border-gray-300 rounded-md p-2 w-full" placeholder="Enter institution" />
             </div>
 
             <div>
                 <label class="block mb-1 font-medium" for="supervisor">Supervisor</label>
-                <input
-                    type="text"
-                    name="supervisor"
-                    id="supervisor"
-                    class="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter supervisor name"
-                />
+                <input type="text" name="supervisor" id="supervisor"
+                    class="border border-gray-300 rounded-md p-2 w-full" placeholder="Enter supervisor name" />
             </div>
 
             <div>
                 <label class="block mb-1 font-medium" for="file">Upload PDF</label>
-                <input
-                    type="file"
-                    name="pdf"
-                    id="file"
-                    accept="application/pdf"
-                    class="border border-gray-300 rounded-md p-2 w-full"
-                    required
-                />
+                <input type="file" name="pdf" id="file" accept="application/pdf"
+                    class="border border-gray-300 rounded-md p-2 w-full" required />
             </div>
 
             <button class="text-white bg-blue-500 px-4 py-2 rounded-md my-4">Submit</button>
@@ -74,6 +48,7 @@
 
     <script>
         const fileInput = document.getElementById("file");
+        const form = document.getElementById("submissionForm");
         const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
         fileInput.addEventListener("change", function () {
@@ -83,6 +58,40 @@
                 this.value = "";
             }
         });
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button');
+            const originalText = submitBtn.textContent;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch('/api/proposals', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Proposal submitted successfully!');
+                    window.location.href = 'education.html';
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Submission failed. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
     </script>
 </body>
+
 </html>
