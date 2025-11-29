@@ -60,14 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await response.json();
                     if (response.ok) {
                         localStorage.setItem('user', JSON.stringify(data.user));
-                        alert('Login successful!');
-                        window.location.href = 'profile.html';
+                        showNotification('Login successful!');
+                        setTimeout(() => {
+                            window.location.href = 'profile.html';
+                        }, 1000);
                     } else {
-                        alert(data.error || 'Login failed');
+                        showNotification(data.error || 'Login failed', true);
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
+                    showNotification('An error occurred. Please try again.', true);
                 }
             });
         }
@@ -84,6 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subject = document.getElementById('subject').value;
                 const message = document.getElementById('message').value;
 
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+
                 try {
                     const response = await fetch(`${API_URL}/contact`, {
                         method: 'POST',
@@ -93,14 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const data = await response.json();
                     if (response.ok) {
-                        alert('Message sent successfully!');
+                        showNotification('Message sent successfully!');
                         form.reset();
                     } else {
-                        alert(data.error || 'Failed to send message');
+                        showNotification(data.error || 'Failed to send message', true);
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
+                    showNotification('An error occurred. Please try again.', true);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
                 }
             });
         }
@@ -137,27 +147,152 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Profile Page Logic ---
-    if (document.title.includes('Profile')) {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-            alert('You must be logged in to view this page.');
-            window.location.href = 'login.html';
-        } else {
-            const nameEl = document.getElementById('profile-name');
-            const emailEl = document.getElementById('profile-email');
-            if (nameEl) nameEl.textContent = user.name;
-            if (emailEl) emailEl.textContent = user.email;
+    // --- Notification System (Global) ---
+    function showNotification(message, isError = false) {
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
 
-            const logoutBtn = document.getElementById('nav-logout');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', (e) => {
+        const notification = document.createElement('div');
+        notification.className = `notification ${isError ? 'error' : ''}`;
+        notification.innerHTML = `
+        <span class="notification-icon">${isError ? '❌' : '✓'}</span>
+        <span class="notification-message">${message}</span>
+    `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    // Make showNotification globally accessible
+    window.showNotification = showNotification;
+
+    // --- Navigation Update Function ---
+        function updateNavigation() {
+            // Find login link - it might have href="login.html" or href="#" (if already converted to logout)
+            const loginLink = document.querySelector('a.login-link');
+            if (!loginLink) return;
+
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            // Remove existing event listeners by cloning the element
+            const newLoginLink = loginLink.cloneNode(true);
+            loginLink.parentNode.replaceChild(newLoginLink, loginLink);
+
+            if (user) {
+                // User is logged in - change to logout
+                newLoginLink.textContent = 'Logout';
+                newLoginLink.href = '#';
+                newLoginLink.classList.add('logout-link');
+                newLoginLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('user');
-                    alert('Logged out successfully.');
-                    window.location.href = 'index.html';
+                    showNotification('Logged out successfully!');
+                    // Update navigation immediately
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 500);
                 });
+            } else {
+                // User is not logged in - keep as login
+                newLoginLink.textContent = 'Login';
+                newLoginLink.href = 'login.html';
+                newLoginLink.classList.remove('logout-link');
             }
         }
-    }
+
+        async function loadUserWorks(userId) {
+            const worksGrid = document.getElementById('works-grid');
+            if (!worksGrid) return;
+
+            try {
+                // Get the logged-in user's full name
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (!user || !user.name) {
+                    return;
+                }
+
+                // Fetch all proposals
+                const response = await fetch(`${API_URL}/proposals`);
+                if (response.ok) {
+                    const proposals = await response.json();
+                    // Filter proposals where author_name matches the user's full_name
+                    // Compare case-insensitively and trim whitespace
+                    const userProposals = proposals.filter(p => {
+                        const proposalName = (p.author_name || '').trim().toLowerCase();
+                        const userName = (user.name || '').trim().toLowerCase();
+                        return proposalName === userName;
+                    });
+
+                    if (userProposals.length > 0) {
+                        worksGrid.innerHTML = '';
+                        userProposals.forEach(proposal => {
+                            const workItem = document.createElement('div');
+                            workItem.className = 'work-item';
+                            workItem.innerHTML = `
+                            <div class="work-icon">📄</div>
+                            <div class="work-content">
+                                <h4>${proposal.title}</h4>
+                                <p>${proposal.institution} • ${proposal.status}</p>
+                            </div>
+                        `;
+                            workItem.addEventListener('click', () => {
+                                window.open(`${API_URL}/pdf/${proposal.pdf_id}`, '_blank');
+                            });
+                            worksGrid.appendChild(workItem);
+                        });
+                    } else {
+                        // Show default message if no works found
+                        worksGrid.innerHTML = `
+                        <div class="work-item">
+                            <div class="work-icon">📄</div>
+                            <div class="work-content">
+                                <h4>No active works</h4>
+                                <p>Your contributions and proposals will appear here</p>
+                            </div>
+                        </div>
+                    `;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user works:', error);
+            }
+        }
+
+    // --- Profile Page Logic ---
+        if (document.title.includes('Profile')) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                showNotification('You must be logged in to view this page.', true);
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                // Update profile name and email in new locations
+                const nameDisplayEl = document.getElementById('profile-name-display');
+                const emailDisplayEl = document.getElementById('profile-email-display');
+                const nameEl = document.getElementById('profile-name');
+                const emailEl = document.getElementById('profile-email');
+                const initialEl = document.getElementById('profile-initial');
+
+                if (nameDisplayEl) nameDisplayEl.textContent = user.name || 'User';
+                if (emailDisplayEl) emailDisplayEl.textContent = user.email || '';
+                if (nameEl) nameEl.textContent = user.name || 'User';
+                if (emailEl) emailEl.textContent = user.email || '';
+
+                // Set avatar initial
+                if (initialEl && user.name) {
+                    initialEl.textContent = user.name.charAt(0).toUpperCase();
+                }
+
+                // Load user's works/proposals if available
+                loadUserWorks(user.id || user.email);
+            }
+        }
+
+    // Call updateNavigation on page load
+    updateNavigation();
 });

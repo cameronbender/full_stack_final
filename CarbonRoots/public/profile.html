@@ -16,29 +16,48 @@
         <a href="contactus.html">Work With Us</a>
         <a href="profile.html">Profile</a>
         <a href="login.html" class="login-link">Login</a>
-        <a href="#" id="nav-logout" class="login-link">Logout</a>
     </nav>
 
     <div class="header-content">
         <h1>Your Profile</h1>
-        <p>Manage your account settings and preferences.</p>
+        <p>View your account information and contributions.</p>
     </div>
 
-    <div class="profile-container">
-        <div class="profile-card">
-            <h2>Account Information</h2>
-            <div class="profile-info">
-                <p><strong>Name:</strong> <span id="profile-name">Loading...</span></p>
-                <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
-                <p><strong>Member Since:</strong> January 2025</p>
+    <div class="profile-main-container">
+        <!-- Modern Profile Card -->
+        <div class="profile-hero-card">
+            <div class="profile-avatar-wrapper">
+                <div class="profile-avatar">
+                    <span id="profile-initial">U</span>
+                </div>
+            </div>
+            <div class="profile-hero-content">
+                <h2 id="profile-name-display">Loading...</h2>
+                <p class="profile-email-display" id="profile-email-display">Loading...</p>
+                <div class="profile-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <span class="meta-label">Member Since</span>
+                        <span class="meta-value">January 2025</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="profile-card">
-            <h2>Settings</h2>
-            <div class="profile-info">
-                <p><strong>Notifications:</strong> Enabled</p>
-                <p><strong>Newsletter:</strong> Subscribed</p>
+        <!-- Current Works Section -->
+        <div class="current-works-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">📚 Current Works</h3>
+                <a href="submission.html" class="btn-primary" style="text-decoration: none; display: inline-block; margin-top: 0; padding: 10px 15px; font-size: 14px; width: auto; flex-shrink: 0;">+ Submit Proposal</a>
+            </div>
+            <div class="works-grid" id="works-grid">
+                <div class="work-item">
+                    <div class="work-icon">📄</div>
+                    <div class="work-content">
+                        <h4>No active works</h4>
+                        <p>Your contributions and proposals will appear here</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
