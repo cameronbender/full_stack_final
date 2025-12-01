@@ -2,90 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carbon Roots - Submit Proposal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <div class="logo">Carbon Roots</div>
-        <a href="index.html">Home</a>
-        <a href="education.html">Education</a>
-        <a href="aboutus.html">About Us</a>
-        <a href="contactus.html">Work With Us</a>
-        <a href="profile.html">Profile</a>
-        <a href="login.html" class="login-link">Login</a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="logo">Carbon Roots</div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="education.html">Education</a>
+                    <a class="nav-link" href="aboutus.html">About Us</a>
+                    <a class="nav-link" href="contactus.html">Work With Us</a>
+                    <a class="nav-link" href="profile.html">Profile</a>
+                    <a class="nav-link login-link" href="login.html">Login</a>
+                </div>
+            </div>
+        </div>
     </nav>
 
-    <div class="header-content">
-        <h1>Submit Your Proposal</h1>
-        <p>Share your research and contribute to carbon capture innovation.</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="header-content">
+                    <h1>Submit Your Proposal</h1>
+                    <p>Share your research and contribute to carbon capture innovation.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="login-container">
-        <div class="login-form">
-            <form id="submission-form">
-                <div class="form-group">
-                    <label for="title">Proposal Title</label>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        placeholder="Enter the title of your proposal"
-                        required
-                    />
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="login-container">
+                    <div class="login-form">
+                        <form id="submission-form">
+                            <div class="mb-3 form-group">
+                                <label for="title" class="form-label">Proposal Title</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="title"
+                                    name="title"
+                                    placeholder="Enter the title of your proposal"
+                                    required
+                                />
+                            </div>
 
-                <div class="form-group">
-                    <label for="author_name">Author Name</label>
-                    <input
-                        type="text"
-                        id="author_name"
-                        name="author_name"
-                        placeholder="Enter your full name"
-                        required
-                    />
-                </div>
+                            <div class="mb-3 form-group">
+                                <label for="author_name" class="form-label">Author Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="author_name"
+                                    name="author_name"
+                                    placeholder="Enter your full name"
+                                    required
+                                />
+                            </div>
 
-                <div class="form-group">
-                    <label for="institution">Institution</label>
-                    <input
-                        type="text"
-                        id="institution"
-                        name="institution"
-                        placeholder="Enter your institution or organization"
-                        required
-                    />
-                </div>
+                            <div class="mb-3 form-group">
+                                <label for="institution" class="form-label">Institution</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="institution"
+                                    name="institution"
+                                    placeholder="Enter your institution or organization"
+                                    required
+                                />
+                            </div>
 
-                <div class="form-group">
-                    <label for="supervisor">Supervisor</label>
-                    <input
-                        type="text"
-                        id="supervisor"
-                        name="supervisor"
-                        placeholder="Enter your supervisor's name (if applicable)"
-                        required
-                    />
-                </div>
+                            <div class="mb-3 form-group">
+                                <label for="supervisor" class="form-label">Supervisor</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="supervisor"
+                                    name="supervisor"
+                                    placeholder="Enter your supervisor's name (if applicable)"
+                                    required
+                                />
+                            </div>
 
-                <div class="form-group">
-                    <label for="pdf">Upload PDF</label>
-                    <input
-                        type="file"
-                        id="pdf"
-                        name="pdf"
-                        accept="application/pdf"
-                        required
-                    />
-                    <small class="file-hint">Maximum file size: 5 MB</small>
-                </div>
+                            <div class="mb-3 form-group">
+                                <label for="pdf" class="form-label">Upload PDF</label>
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    id="pdf"
+                                    name="pdf"
+                                    accept="application/pdf"
+                                    required
+                                />
+                                <small class="file-hint">Maximum file size: 5 MB</small>
+                            </div>
 
-                <button type="submit" class="btn-primary">Submit Proposal</button>
-            </form>
+                            <button type="submit" class="btn btn-primary btn-primary">Submit Proposal</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="scripts.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {

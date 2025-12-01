@@ -127,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (proposals.length > 0) {
                         grid.innerHTML = '';
                         proposals.forEach(proposal => {
+                            const col = document.createElement('div');
+                            col.className = 'col-lg-4 col-md-6 mb-4';
                             const card = document.createElement('div');
                             card.className = 'card';
                             card.innerHTML = `
@@ -139,7 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <a class="pdf-button" href="${API_URL}/pdf/${proposal.pdf_id}" target="_blank" rel="noopener">Open PDF</a>
                                 </div>
                             `;
-                            grid.appendChild(card);
+                            col.appendChild(card);
+                            grid.appendChild(col);
                         });
                     }
                 })
